@@ -1,0 +1,10 @@
+{
+    "TN12 0AA": {
+        "valid": true,
+        "completions": ["TN12 0AA"]
+    },
+    "FN1": {
+        "valid": false,
+        "completions": ["FN1 MR2", "FN1 MR3"]
+    }
+}

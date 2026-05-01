@@ -14,6 +14,26 @@ def load_cache() -> dict:
     return data
 
 
+data = load_cache()
+print(data)
+cache = {"TN12 0AA": {"valid": True, "completions": ["TN12 0AA"]}}
+cache_key = cache.keys()
+print(cache_key)
+
+# for k in cache.keys():
+#     for keys in data.keys():
+#         if k in keys:
+#             print("True")
+#         else:
+#             print("False")
+
+for k in cache.keys():
+    if k in data.keys():
+        print("True")
+    else:
+        print("False")
+
+
 def save_cache(cache: dict):
     """Saves the cache to a file as JSON"""
     with open("postcode_cache.json", "w") as f:
