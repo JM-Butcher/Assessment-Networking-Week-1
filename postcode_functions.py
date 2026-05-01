@@ -78,7 +78,7 @@ def get_postcode_completions(postcode_start: str) -> list[str]:
         return data["result"]
 
 
-def get_postcodes_details(postcodes: list[str]) -> dict:
+def get_postcodes_details(postcodes: list[str]) -> list[dict]:
     """"""
     if not isinstance(postcodes, list):
         raise TypeError("Function expects a list of strings.")
