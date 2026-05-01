@@ -25,6 +25,28 @@ def save_cache(cache: dict) -> None:
         json.dump(data, f, indent=4)
 
 
+# saving a cache works here, but not in the functions?
+# when in the functions, it deletes the postcode_cache.json
+data = load_cache()
+print(data)
+cache = {"TN12 FFF":
+         {"valid": True,
+             "completions": ["TN12 0AA"]
+          }
+         }
+
+
+# for k in cache.keys():
+#     if k in data.keys():
+#         print("True")
+#     else:
+#         print("False")
+
+save_cache(cache)
+data = load_cache()
+print(data)
+
+
 def validate_postcode(postcode: str) -> bool:
     """Determines whether a postcode is valid (True) or invalid (False)
     Using the UK postcode API
@@ -47,6 +69,12 @@ def validate_postcode(postcode: str) -> bool:
 
     if response.status_code == 200:
         # add validation to cache
+        cache = {postcode.upper().strip():
+                 {"valid": data["result"],
+                  "completions": [postcode.upper().strip()]
+                  }
+                 }
+        save_cache(cache)
 
         return data["result"]
 
@@ -91,11 +119,23 @@ def get_postcode_completions(postcode_start: str) -> list[str]:
 
     if data["result"] == None:
         # add to cache here
+        cache = {postcode_start.upper().strip():
+                 {"valid": False,
+                  "completions": None
+                  }
+                 }
+        save_cache(cache)
 
         return None
 
     if response.status_code == 200:
         # add to cache here
+        cache = {postcode_start.upper().strip():
+                 {"valid": False,
+                  "completions": data["result"]
+                  }
+                 }
+        save_cache(cache)
 
         return data["result"]
 
