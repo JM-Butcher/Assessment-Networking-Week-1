@@ -9,13 +9,18 @@ CACHE_FILE = "./postcode_cache.json"
 
 def load_cache() -> dict:
     """Loads the cache from a file and converts it from JSON to a dictionary."""
-    # This function is used in Task 3, you can ignore it for now.
-    ...
+    with open("postcode_cache.json", "r") as f:
+        data = json.load(f)
+    return data
 
 
 def save_cache(cache: dict):
     """Saves the cache to a file as JSON"""
-    # This function is used in Task 3, you can ignore it for now.
+    with open("postcode_cache.json", "w") as f:
+        data = json.load(f)
+        if cache not in data:
+            pass
+
     ...
 
 
