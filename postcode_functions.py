@@ -14,34 +14,31 @@ def load_cache() -> dict:
     return data
 
 
+def save_cache(cache: dict) -> None:
+    """Saves the cache to a file as JSON"""
+    with open("postcode_cache.json", "r+") as f:
+        data = json.load(f)
+
+        # if not already in cache, add
+        for key in cache.keys():
+            if key not in data.keys():
+                data.update(cache)
+
+
 data = load_cache()
 print(data)
-cache = {"TN12 0AA": {"valid": True, "completions": ["TN12 0AA"]}}
+cache = {"TN12 0AA-": {"valid": True, "completions": ["TN12 0AA"]}}
 cache_key = cache.keys()
 print(cache_key)
 
+
 # for k in cache.keys():
-#     for keys in data.keys():
-#         if k in keys:
-#             print("True")
-#         else:
-#             print("False")
+#     if k in data.keys():
+#         print("True")
+#     else:
+#         print("False")
 
-for k in cache.keys():
-    if k in data.keys():
-        print("True")
-    else:
-        print("False")
-
-
-def save_cache(cache: dict):
-    """Saves the cache to a file as JSON"""
-    with open("postcode_cache.json", "w") as f:
-        data = json.load(f)
-        if cache not in data:
-            pass
-
-    ...
+save_cache(cache)
 
 
 def validate_postcode(postcode: str) -> bool:
@@ -50,6 +47,11 @@ def validate_postcode(postcode: str) -> bool:
     """
     if not isinstance(postcode, str):
         raise TypeError("Function expects a string.")
+
+    # check if postcode is validated in cache
+    data = load_cache()
+    if postcode.upper().strip() in data.keys():
+        return data[postcode]["valid"]
 
     response = req.get(
         f"https://api.postcodes.io/postcodes/{postcode}/validate")
@@ -60,6 +62,8 @@ def validate_postcode(postcode: str) -> bool:
     data = response.json()
 
     if response.status_code == 200:
+        # add validation to cache
+
         return data["result"]
 
 
@@ -88,6 +92,11 @@ def get_postcode_completions(postcode_start: str) -> list[str]:
     if not isinstance(postcode_start, str):
         raise TypeError("Function expects a string.")
 
+    # check if postcode is completed in cache
+    data = load_cache()
+    if postcode_start.upper().strip() in data.keys():
+        return data[postcode_start]["completions"]
+
     response = req.get(
         f"https://api.postcodes.io/postcodes/{postcode_start}/autocomplete")
 
@@ -97,9 +106,13 @@ def get_postcode_completions(postcode_start: str) -> list[str]:
     data = response.json()
 
     if data["result"] == None:
+        # add to cache here
+
         return None
 
     if response.status_code == 200:
+        # add to cache here
+
         return data["result"]
 
 
