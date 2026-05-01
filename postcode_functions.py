@@ -27,7 +27,7 @@ def save_cache(cache: dict) -> None:
 
 data = load_cache()
 print(data)
-cache = {"TN12 0AA-": {"valid": True, "completions": ["TN12 0AA"]}}
+cache = {"TN12 FFF": {"valid": True, "completions": ["TN12 0AA"]}}
 cache_key = cache.keys()
 print(cache_key)
 
