@@ -16,31 +16,13 @@ def load_cache() -> dict:
 
 def save_cache(cache: dict) -> None:
     """Saves the cache to a file as JSON"""
-    with open("postcode_cache.json", "w+") as f:
+    with open("postcode_cache.json", "r") as f:
         data = json.load(f)
 
-        # if not already in cache, add
-        for key in cache.keys():
-            if key not in data.keys():
-                json.dump(cache, f)
+    data.update(cache)
 
-
-data = load_cache()
-print(data)
-cache = {"TN12 FFF": {"valid": True, "completions": ["TN12 0AA"]}}
-cache_key = cache.keys()
-print(cache_key)
-
-
-# for k in cache.keys():
-#     if k in data.keys():
-#         print("True")
-#     else:
-#         print("False")
-
-save_cache(cache)
-data = load_cache()
-print(data)
+    with open("postcode_cache.json", "w") as f:
+        json.dump(data, f, indent=4)
 
 
 def validate_postcode(postcode: str) -> bool:
